@@ -21,10 +21,12 @@ export class IonCurrencyMaskComponent implements ControlValueAccessor {
   @Input() clearInput = false;
   @Input() lastChild = false;
   @Input() disabled = false;
+  @Input() thousands_char = ".";
+  @Input() decimal_char = ",";
 
   public valueIonInput: string;
 
-  private currencyMask = new CurrencyMask();
+  private currencyMask = new CurrencyMask(this.thousands_char, this.decimal_char);
   private value: number;
   private propagateChange = (_: any) => { };
 
@@ -49,7 +51,7 @@ export class IonCurrencyMaskComponent implements ControlValueAccessor {
 
   public onChange(event) {
     if (this.valueIonInput) {
-      this.value = Number.parseFloat(this.valueIonInput.replace(/[\.]/g, '').replace(/[,]/g, '.'));
+      this.value = Number.parseFloat(this.valueIonInput.replace(/[\.]/g, '').replace(/[,]/g, this.thousands_char));
     } else {
       this.value = null;
     }

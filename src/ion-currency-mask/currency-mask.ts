@@ -2,6 +2,14 @@ export class CurrencyMask {
     private n: any;
     private len: any;
 
+    private thousands_char: any;
+    private decimal_char: any;
+
+    constructor(thousands_char, decimal_char) {
+        this.thousands_char = thousands_char;
+        this.decimal_char = decimal_char;
+    }
+
     public detectAmountReverse(v: any): string {
         if (typeof(v) === 'number') {
             return this.fixAmountReverse(v);
@@ -22,11 +30,11 @@ export class CurrencyMask {
     }
 
     private fixAmountReverse(a: number) {
-        return a.toFixed(2).replace('.', ',');
+        return a.toFixed(2).replace(this.decimal_char, this.thousands_char);
     }
 
     private fixAmount(a: string): string {
-        const period = a.indexOf(',');
+        const period = a.indexOf(this.decimal_char);
         if (period > -1) {
         a = a.substring(0, period) + a.substring(period + 1);
         }
@@ -35,7 +43,7 @@ export class CurrencyMask {
         a = '0' + a;
         this.len = a.length;
         }
-        a = a.substring(0, this.len - 2) + ',' + a.substring(this.len - 2, this.len);
+        a = a.substring(0, this.len - 2) + this.decimal_char + a.substring(this.len - 2, this.len);
         while (a.length > 4 && (a[0] === '0')) {
         a = a.substring(1)
         }
@@ -43,7 +51,7 @@ export class CurrencyMask {
         a = '0' + a;
         }
         a = this.removeAllDots(a);
-        const spComma = a.split(',');
+        const spComma = a.split(this.decimal_char);
         if (spComma[0].length >= 4) {
         let hundreds = [];
         let b = spComma[0];
@@ -58,10 +66,10 @@ export class CurrencyMask {
         }
         hundreds = hundreds.reverse();
         hundreds.forEach((hd) => {
-            b += '.' + hd;
+            b += this.thousands_char + hd;
         });
         b = b.replace(/^\./g, '');
-        a = b.concat(',').concat(spComma[1]);
+        a = b.concat(this.decimal_char).concat(spComma[1]);
         }
         return (a);
     }
