@@ -8,7 +8,7 @@
 To install ,ion-currencymask run:
 
 ```bash
-$ npm install @pluritech/ion-currencymask --save
+$ npm install @plaas/ion-currencymask --save
 ```
 
 ## Consuming your library
